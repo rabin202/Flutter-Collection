@@ -2,23 +2,70 @@ import 'package:flutter/material.dart';
 
 void main() {
   runApp(MaterialApp(
+      debugShowCheckedModeBanner: false,
     home:IdCard(),
   ));
 }
 
-class IdCard extends StatelessWidget {
+class IdCard extends StatefulWidget {
   const IdCard({super.key});
+
+  @override
+  State<IdCard> createState() => _IdCardState();
+}
+
+class _IdCardState extends State<IdCard> {
+  bool darkMode = false;
+
+  Color? appBarColor,
+      scaffoldBgColor,
+      dividerAndTitleColor,
+      labelTextColor,
+      mainTextColor;
+
+  @override
+  void initState() {
+    super.initState();
+    updateColors();
+  }
+
+  void updateColors() {
+    if (darkMode) {
+      appBarColor = Colors.grey[850];
+      scaffoldBgColor = Colors.grey[900];
+      dividerAndTitleColor = Colors.white;
+      labelTextColor = Colors.grey;
+      mainTextColor = Colors.amber[400];
+    } else {
+      appBarColor = Colors.grey;
+      scaffoldBgColor = Colors.white;
+      dividerAndTitleColor = Colors.black;
+      labelTextColor = Colors.black;
+      mainTextColor = Colors.amber[400];
+    }
+  }
+
+  void updateDarkMode() {
+    setState(() {
+      darkMode = !darkMode;
+      updateColors();
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      backgroundColor: Colors.grey[900],
+      backgroundColor: scaffoldBgColor,
       appBar: AppBar(
         title: Text("ID Card"),
         centerTitle: true,
-        backgroundColor: Colors.grey[850],
-        foregroundColor: Colors.white,
+        backgroundColor: appBarColor,
+        foregroundColor: dividerAndTitleColor,
         elevation: 0,
+      ),
+      floatingActionButton: FloatingActionButton(onPressed: updateDarkMode,
+      child: darkMode? Icon(Icons.light_mode):Icon(Icons.dark_mode_rounded),
       ),
       body: Padding(
         padding: EdgeInsets.fromLTRB(30,40,30,0),
@@ -33,17 +80,19 @@ class IdCard extends StatelessWidget {
             ),
             Divider(
               height: 90,
-              color: Colors.white,
+              color: dividerAndTitleColor,
             ),
             Text("Name",
-              style: TextStyle(color: Colors.grey,letterSpacing: 2,fontSize: 25.0),
+              style: TextStyle(color: labelTextColor,
+                  letterSpacing: 2,
+                  fontSize: 25.0),
             ),
             SizedBox(
               height: 10,
             ),
             Text("Polar Bear",
               style: TextStyle(
-                  color: Colors.amber[400],
+                  color: mainTextColor,
                   letterSpacing: 2,
                   fontSize: 34.0,
                   fontWeight: FontWeight.bold),
@@ -52,14 +101,16 @@ class IdCard extends StatelessWidget {
               height: 20,
             ),
             Text("Skill",
-              style: TextStyle(color: Colors.grey,letterSpacing: 2,fontSize: 25.0),
+              style: TextStyle(color: labelTextColor,
+                  letterSpacing: 2,
+                  fontSize: 25.0),
             ),
             SizedBox(
               height: 10,
             ),
             Text("Cooking",
               style: TextStyle(
-                  color: Colors.amber[400],
+                  color: mainTextColor,
                   letterSpacing: 2,
                   fontSize: 32.0,
                   fontWeight: FontWeight.bold),
@@ -71,17 +122,17 @@ class IdCard extends StatelessWidget {
               children: <Widget>[
                 Icon(
                   Icons.email,
-                  color: Colors.grey,
+                  color: labelTextColor,
                 ),
                 SizedBox(width: 10,),
                 Text("polarbear@gmail.com"
                   ,style:TextStyle(
-                    color: Colors.grey,
+                    color: labelTextColor,
                     fontSize: 20,
                   ),
                 ),
               ],
-            )
+            ),
           ],
 
         ),
