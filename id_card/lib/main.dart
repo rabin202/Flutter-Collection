@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:id_card/preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -29,27 +31,32 @@ class _IdCardState extends State<IdCard> {
     updateColors();
   }
 
-  void updateColors() {
-    if (darkMode) {
-      appBarColor = Colors.grey[850];
-      scaffoldBgColor = Colors.grey[900];
-      dividerAndTitleColor = Colors.white;
-      labelTextColor = Colors.grey;
-      mainTextColor = Colors.amber[400];
-    } else {
-      appBarColor = Colors.grey;
-      scaffoldBgColor = Colors.white;
-      dividerAndTitleColor = Colors.black;
-      labelTextColor = Colors.black;
-      mainTextColor = Colors.amber[400];
-    }
+  Future<void> updateColors() async {
+    darkMode = await getTheme() == "dark";
+
+    setState(() {
+      if (darkMode) {
+        appBarColor = Colors.grey[850];
+        scaffoldBgColor = Colors.grey[900];
+        dividerAndTitleColor = Colors.white;
+        labelTextColor = Colors.grey;
+        mainTextColor = Colors.amber[400];
+      } else {
+        appBarColor = Colors.grey;
+        scaffoldBgColor = Colors.white;
+        dividerAndTitleColor = Colors.black;
+        labelTextColor = Colors.black;
+        mainTextColor = Colors.amber[400];
+      }
+    });
   }
 
-  void updateDarkMode() {
-    setState(() {
-      darkMode = !darkMode;
-      updateColors();
-    });
+  Future<void> updateDarkMode() async {
+    await setTheme(
+      darkMode ? "light" : "dark",
+    );
+
+    await updateColors();
   }
 
 
